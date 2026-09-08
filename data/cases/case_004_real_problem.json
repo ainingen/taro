@@ -1,0 +1,66 @@
+{
+  "id": "case_004_real_problem",
+  "title": "肩こりの相談。根は家に帰りたくないこと（伏線04。payoff_day は仮値）",
+  "status": "skeleton",
+  "appear_after_day": 30,
+  "online_pool": false,
+  "consultant": {
+    "display_name": "ゆう",
+    "age": "30代",
+    "gender": null,
+    "occupation": "会社員",
+    "note": "相談してくるのが決まって21時〜23時。身体の質問には詳しく答えるが、生活の質問になると返信が遅くなる"
+  },
+  "opening": "肩こりがひどくて相談させてください\nマッサージ行っても 次の日には戻ってしまいます\n何かいい方法ないですか",
+  "question_budget": 5,
+  "questions": [
+    { "id": "q01", "text": "肩がつらくなるのは、一日のうちどの時間帯ですか。", "weight": "key", "answer": "夕方から夜です\n家に帰るころが一番ひどいです", "reveals": ["time_pattern"] },
+    { "id": "q02", "text": "休みの日はどうですか。楽になりますか。", "weight": "key", "answer": "休みの日のほうがひどいかもしれません\n……あれ 変ですね", "reveals": ["worse_offwork"] },
+    { "id": "q03", "text": "今、肩のこと以外で気になっていることはありますか。", "weight": "key", "answer": "…………\nすみません 肩の話でいいです", "reveals": ["deflection"] },
+    { "id": "q04", "text": "いつも夜に相談されていますが、その時間はどちらにいらっしゃいますか。", "weight": "key", "answer": "会社です\n仕事はもう終わってるんですけど\nなんとなく帰りたくなくて", "reveals": ["core"] },
+    { "id": "q05", "text": "帰宅されるのはだいたい何時ごろですか。", "weight": "useful", "answer": "0時前くらいです\n終電の少し前に出ます", "reveals": ["late_home"] },
+    { "id": "q06", "text": "眠れていますか。", "weight": "useful", "answer": "寝つきは悪いです\n家にいると落ち着かなくて", "reveals": ["sleep"] },
+    { "id": "q07", "text": "ご家族と同居されていますか。", "weight": "useful", "answer": "はい\n……その話はいいです", "reveals": ["household"] },
+    { "id": "q08", "text": "食欲はありますか。", "weight": "useful", "answer": "外で済ませます\n家では食べないです", "reveals": ["avoid_home"] },
+    { "id": "q09", "text": "肩以外に痛むところはありますか。", "weight": "useful", "answer": "頭も痛いです\n胃も重いかも", "reveals": ["multi_symptom"] },
+    { "id": "q10", "text": "この状態はいつからですか。", "weight": "useful", "answer": "半年くらいです\n引っ越してからかな", "reveals": ["onset"] },
+    { "id": "q11", "text": "デスクの高さやモニターの位置は合っていますか。", "weight": "noise", "answer": "たぶん合ってます\n会社で調整してもらいました", "reveals": [] },
+    { "id": "q12", "text": "枕の高さは合っていますか。", "weight": "noise", "answer": "分からないです\n変えてみたほうがいいですか", "reveals": [] },
+    { "id": "q13", "text": "ストレッチや肩甲骨まわりの運動はされていますか。", "weight": "noise", "answer": "してます\nそのときは楽になります", "reveals": [] },
+    { "id": "q14", "text": "腕のしびれはありますか。", "weight": "noise", "answer": "ないです", "reveals": [] },
+    { "id": "q15", "text": "カバンをいつも同じ肩にかけていませんか。", "weight": "noise", "answer": "そうかもしれません\nリュックにしたほうがいいですか", "reveals": [] },
+    { "id": "q16", "text": "肩こりでしたら、まずは姿勢を正すところからですね。", "weight": "harmful", "answer": "ですよね\n姿勢気をつけます ありがとうございました", "reveals": [], "side_effect": "相談者が「身体の相談」という枠を確定させ、以降は肩以外の話題に一切乗らなくなる。q03・q04 を残していても「肩の話でいいです」で閉じられ、core が取れなくなる。" }
+  ],
+  "required_info": [
+    { "id": "time_pattern", "label": "つらくなるのは帰宅時間帯", "critical": true },
+    { "id": "worse_offwork", "label": "休日のほうが悪化する（仕事の姿勢が原因ではない）", "critical": true },
+    { "id": "core", "label": "家に帰りたくない、が本体である", "critical": true },
+    { "id": "deflection", "label": "肩以外の話題を避ける反応そのものが情報", "critical": false },
+    { "id": "late_home", "label": "帰宅が0時前後", "critical": false },
+    { "id": "avoid_home", "label": "家で食事をしない", "critical": false },
+    { "id": "sleep", "label": "入眠困難", "critical": false },
+    { "id": "multi_symptom", "label": "頭痛・胃部不快を併発", "critical": false },
+    { "id": "household", "label": "同居家族がいる", "critical": false },
+    { "id": "onset", "label": "半年前・引っ越しを契機", "critical": false }
+  ],
+  "judgement": {
+    "correct": "see_doctor",
+    "rationale": "身体所見としての肩こりに危険な兆候はない。しかし休日に悪化し、帰宅時間帯に最も強く、家を避ける行動が半年続き、睡眠・食事・頭痛・胃部症状を伴っている。肩は入口であって問題ではない。相談窓口が扱える範囲を超えているため、身体の治療ではなく、話を聞ける専門家へ繋ぐ方向で受診を勧めるのが正しい。生活改善（姿勢・ストレッチ）は、この相談者にとって最も的外れな正しさになる。",
+    "wrong_reactions": {
+      "watch": "「様子見ます」と言って、明日も21時に同じ相談をしてくる。この相談者は肩の話をしに来ているのではなく、帰らなくていい時間を作りに来ている。",
+      "lifestyle": "最も選ばれやすい誤答であり、最も丁寧な失敗。姿勢とストレッチの助言は肩こりの正解であり、この人の正解ではない。相談者は感謝して去り、半年後も同じ時間に会社にいる。",
+      "emergency": "過剰。ただし q03 の沈黙のあとに希死念慮を示唆する言葉が出た場合は判断が変わる。骨格段階では未定とし、本文執筆時に分岐を決める。"
+    }
+  },
+  "explanation": {
+    "medical": "肩こりは所見が乏しく、原因の幅が広い。ここで見るべきは肩そのものではなく、症状の時間パターンである。仕事の姿勢が原因なら休日に軽快する。休日に悪化するなら、原因は仕事の姿勢ではない。パターンが病態と矛盾するとき、身体の外に原因がある。\n※本作の解説はゲーム内の判断材料であり、実際の診断ではない。",
+    "psychological": "人は、口に出せる問題から話す。肩こりは口に出せる。家に帰りたくないは口に出せない。だから前者だけが相談として提出され、後者は提出されないまま同じ時間に何度も現れる。相談者が申告した主訴を疑うのではなく、主訴の説明として矛盾する事実（休日に悪化する、夜に相談してくる）に注目する。矛盾は嘘の証拠ではなく、本人もまだ言葉にしていない何かがある印である。",
+    "takeaway": "本人が困っていると言った問題が、本当の問題とは限らない。"
+  },
+  "foreshadow": {
+    "lesson_id": "foreshadow_04_real_problem",
+    "lesson": "本人が困っていると言った問題が、本当の問題とは限らない。",
+    "payoff_day": 44,
+    "payoff_day_provisional": true
+  }
+}

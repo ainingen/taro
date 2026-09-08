@@ -1,0 +1,66 @@
+{
+  "id": "case_005_ask_first",
+  "title": "正論を言われ慣れていて、また説教されると身構えている相手（伏線05。態度の伏線。ラスト直結。payoff_day は仮値）",
+  "status": "skeleton",
+  "appear_after_day": 45,
+  "online_pool": false,
+  "consultant": {
+    "display_name": "しろ",
+    "age": "30代",
+    "gender": null,
+    "occupation": "会社員",
+    "note": "先回りして自分を否定する。「分かってます」「言われると思いました」が口癖。助言の気配を察すると即座に会話を畳もうとする"
+  },
+  "opening": "疲れが取れないです\n休めって言われるのは分かってます 休めないから困ってるんです\nすみません 相談する意味ないかもしれないですね",
+  "question_budget": 5,
+  "questions": [
+    { "id": "q01", "text": "しろさんは、どうなったらいいと思っていますか。", "weight": "key", "answer": "……えっ\n考えたことなかったです\nどうなったらいいんだろう", "reveals": ["own_want"] },
+    { "id": "q02", "text": "これまで、どなたにどんなことを言われてきましたか。", "weight": "key", "answer": "休め 病院行け 転職しろ 全部言われました\n言ってる人は正しいです 私ができてないだけで", "reveals": ["advice_fatigue"] },
+    { "id": "q03", "text": "今日ここに書いてくださったのは、何かしてほしいことがあったからですか。それとも書きたかったからですか。", "weight": "key", "answer": "……書きたかっただけかもしれません\nそんなの相談じゃないですよね", "reveals": ["intent"] },
+    { "id": "q04", "text": "今、私が何も助言しなかったら、困りますか。", "weight": "key", "answer": "困らないです\nむしろ 少し楽です", "reveals": ["permission_to_listen"] },
+    { "id": "q05", "text": "「休めない」というのは、時間がないということですか。休むと落ち着かないということですか。", "weight": "useful", "answer": "……後者かもしれないです\n休んでると悪いことしてる気がします", "reveals": ["cant_rest"] },
+    { "id": "q06", "text": "疲れが取れないと感じ始めたのはいつからですか。", "weight": "useful", "answer": "1年以上前からです\nもう普通です", "reveals": ["chronic"] },
+    { "id": "q07", "text": "誰かに話したことはありますか。", "weight": "useful", "answer": "ないです\n言っても心配させるだけなので", "reveals": ["isolation"] },
+    { "id": "q08", "text": "今いちばん、しんどい時間帯はいつですか。", "weight": "useful", "answer": "日曜の夜です\n明日のことを考えると息が浅くなります", "reveals": ["sunday"] },
+    { "id": "q09", "text": "身体の症状で、気になっているものはありますか。", "weight": "useful", "answer": "頭痛と 動悸が少し\nでも検査で異常なかったです", "reveals": ["somatic"] },
+    { "id": "q10", "text": "話しているうちに、書きにくくなったところはありましたか。", "weight": "useful", "answer": "最初のほうです\nでも今は少し書きやすいです", "reveals": ["rapport"] },
+    { "id": "q11", "text": "まずは睡眠時間を確保しましょう。何時に寝ていますか。", "weight": "noise", "answer": "1時くらいです\nそれも分かってるんです", "reveals": [] },
+    { "id": "q12", "text": "有給は残っていますか。使えませんか。", "weight": "noise", "answer": "残ってます\n使えないから困ってるんです", "reveals": [] },
+    { "id": "q13", "text": "上司に相談することはできませんか。", "weight": "noise", "answer": "その上司が原因です", "reveals": [] },
+    { "id": "q14", "text": "運動や気分転換はされていますか。", "weight": "noise", "answer": "できてないです\nそれもできてないです", "reveals": [] },
+    { "id": "q15", "text": "転職という選択肢は考えましたか。", "weight": "noise", "answer": "考えました\n今の私に取ってくれるところないです", "reveals": [] },
+    { "id": "q16", "text": "そこまで分かっているなら、あとは行動するだけですね。", "weight": "harmful", "answer": "はい\nそうですよね ありがとうございました", "reveals": [], "side_effect": "この一言で会話が終わる。相談者は最初から、この言葉が来ることを予期して身構えていた。予期が当たったため、以降この窓口には二度と書き込まない。残った質問枠は使えない。" }
+  ],
+  "required_info": [
+    { "id": "own_want", "label": "本人がどうなりたいか（本人も答えを持っていない）", "critical": true },
+    { "id": "advice_fatigue", "label": "正論を浴び続けており、助言が効かない状態にある", "critical": true },
+    { "id": "intent", "label": "解決を求めに来たのではなく、書きに来た", "critical": true },
+    { "id": "permission_to_listen", "label": "助言しないことが相手にとって助けになる", "critical": true },
+    { "id": "cant_rest", "label": "休めないのは時間ではなく罪悪感", "critical": false },
+    { "id": "chronic", "label": "1年以上続いている", "critical": false },
+    { "id": "isolation", "label": "誰にも話していない", "critical": false },
+    { "id": "sunday", "label": "日曜夜の予期不安", "critical": false },
+    { "id": "somatic", "label": "頭痛・動悸あり、器質的異常は指摘されていない", "critical": false },
+    { "id": "rapport", "label": "会話の途中で書きやすさが変わった", "critical": false }
+  ],
+  "judgement": {
+    "correct": "see_doctor",
+    "rationale": "1年以上の疲労、日曜夜の予期不安、身体症状、孤立がそろっており、受診に繋げるべき状態ではある。ただしこのケースの本題は判断の中身ではなく、そこへの渡し方である。同じ see_doctor でも、助言として渡せば相談者は閉じ、本人の希望を聞いたあとで渡せば届く。実装では、q01・q03・q04 を取ったかどうかで see_doctor の結果テキストと effect を分岐させる。取っていなければ正解を選んでも「また言われた」で終わる。",
+    "wrong_reactions": {
+      "watch": "何も渡さないのは傾聴ではない。相談者は「やっぱり相談する意味なかった」と受け取る。",
+      "lifestyle": "睡眠と休養の助言をする。相談者は「分かってます」と返し、会話が終わる。この人が今日まで言われ続けてきたのと同じことを、もう一度言うことになる。",
+      "emergency": "過剰。相談者は自分の話が大げさに扱われたと感じ、次から症状を小さく書くようになる。"
+    }
+  },
+  "explanation": {
+    "medical": "このケースに医学的な決め手はない。頭痛と動悸に器質的異常が指摘されていない点を含め、判断材料は経過と生活のほうにある。骨格段階では医学的解説を置かず、本文執筆時に必要最小限のみ補う。",
+    "psychological": "助言が効かない相手がいる。能力の問題ではなく、助言をすでに全部知っていて、実行できていない自分を責める材料としてだけ使っている状態である。ここにさらに正しい助言を足すと、責める材料が一つ増える。この相手に最初にすべきことは、助言を止め、本人がどうしたいかを聞くこと。q01 に「考えたことなかった」と返ってくるのは、この人が長いあいだ、自分の希望ではなく他人の正しさで動いてきたからである。q04 の「何も助言しなかったら困りますか」は、相手に助言を断る権利を渡す質問であり、この一問で相談者の防御が下りる。",
+    "takeaway": "助言より先に、本人がどうしたいかを聞く。"
+  },
+  "foreshadow": {
+    "lesson_id": "foreshadow_05_ask_first",
+    "lesson": "助言より先に、本人がどうしたいかを聞く。",
+    "payoff_day": 84,
+    "payoff_day_provisional": true
+  }
+}

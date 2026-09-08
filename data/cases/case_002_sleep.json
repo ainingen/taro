@@ -1,0 +1,65 @@
+{
+  "id": "case_002_sleep",
+  "title": "大学生・寝ているのに疲れが取れない（伏線02。payoff_day は仮値）",
+  "status": "skeleton",
+  "appear_after_day": 5,
+  "online_pool": false,
+  "consultant": {
+    "display_name": "みお",
+    "age": "20歳",
+    "gender": null,
+    "occupation": "大学生",
+    "note": "深夜に相談してくる。時間を聞かれると即答するが、内容を聞かれると考え込んで返信が遅くなる"
+  },
+  "opening": "こんばんは\n最近ずっとだるくて 寝てるのに疲れが取れないんです\n睡眠時間は足りてると思うんですけど",
+  "question_budget": 5,
+  "questions": [
+    { "id": "q01", "text": "夜中に目が覚めることはありますか。何回くらいですか。", "weight": "key", "answer": "あります\n2、3回は起きてる気がします\n覚えてないだけでもっとかも", "reveals": ["awakening"] },
+    { "id": "q02", "text": "布団に入ってから、実際に眠るまでどのくらいかかりますか。", "weight": "key", "answer": "1時間以上かかります\nスマホ見ちゃうのもあるけど 消しても寝られないです", "reveals": ["latency"] },
+    { "id": "q03", "text": "朝、起きた瞬間に「寝た」という感じはありますか。", "weight": "key", "answer": "ないです\n寝る前と同じ状態で朝になってる感じです", "reveals": ["unrefreshing"] },
+    { "id": "q04", "text": "眠りが浅いと感じ始めたのはいつからですか。それ以前は違いましたか。", "weight": "key", "answer": "半年くらい前からです\n前はふつうに寝てました", "reveals": ["onset"] },
+    { "id": "q05", "text": "休みの日は、どのくらい寝ますか。", "weight": "useful", "answer": "12時間くらい寝ちゃいます\nでも起きてもだるいです", "reveals": ["oversleep_no_relief"] },
+    { "id": "q06", "text": "日中、意図せず眠ってしまうことはありますか。", "weight": "useful", "answer": "授業中に落ちます\n寝ようと思ってないのに", "reveals": ["daytime"] },
+    { "id": "q07", "text": "気分の落ち込みや、楽しめないと感じることはありますか。", "weight": "useful", "answer": "……あります\nでも寝不足のせいかなと思ってました", "reveals": ["mood"] },
+    { "id": "q08", "text": "いびきや、息が止まっていると言われたことはありますか。", "weight": "useful", "answer": "一人暮らしなので分からないです", "reveals": [] },
+    { "id": "q09", "text": "カフェインはどのくらい摂りますか。何時ごろまでですか。", "weight": "useful", "answer": "エナジードリンク1日2本くらい\n夜も飲みます", "reveals": ["caffeine"] },
+    { "id": "q10", "text": "食欲や体重に変化はありますか。", "weight": "useful", "answer": "あんまり食べてないです\n痩せたかも", "reveals": ["appetite"] },
+    { "id": "q11", "text": "睡眠時間は1日何時間ですか。", "weight": "noise", "answer": "7時間くらいです\nだから足りてるはずなんですよね", "reveals": [] },
+    { "id": "q12", "text": "寝室は暗くしていますか。", "weight": "noise", "answer": "暗くしてます", "reveals": [] },
+    { "id": "q13", "text": "枕やマットレスは体に合っていますか。", "weight": "noise", "answer": "分からないです\n変えたほうがいいですか", "reveals": [] },
+    { "id": "q14", "text": "寝る前にお風呂に入っていますか。", "weight": "noise", "answer": "入ってます\nシャワーのことも多いです", "reveals": [] },
+    { "id": "q15", "text": "運動する習慣はありますか。", "weight": "noise", "answer": "ないです\nやっぱり運動ですかね", "reveals": [] },
+    { "id": "q16", "text": "学生さんならまだ体力もあるでしょうし、生活リズムの問題では。", "weight": "harmful", "answer": "……そうですよね\nすみません 生活直します", "reveals": [], "side_effect": "相談者が原因を自分の怠惰に帰属させ、以降「気をつけます」「頑張ります」しか返さなくなる。中途覚醒も気分の落ち込みも、聞いても「大丈夫です」で流される。" }
+  ],
+  "required_info": [
+    { "id": "awakening", "label": "中途覚醒がある", "critical": true },
+    { "id": "unrefreshing", "label": "睡眠で回復していない（非回復性睡眠）", "critical": true },
+    { "id": "onset", "label": "半年前という発症時期がある（元は眠れていた）", "critical": true },
+    { "id": "latency", "label": "入眠に1時間以上かかる", "critical": false },
+    { "id": "mood", "label": "気分の落ち込み・興味の減退がある", "critical": false },
+    { "id": "oversleep_no_relief", "label": "長く寝ても回復しない", "critical": false },
+    { "id": "daytime", "label": "日中の不随意な眠り込み", "critical": false },
+    { "id": "caffeine", "label": "夜間のカフェイン摂取", "critical": false },
+    { "id": "appetite", "label": "食欲低下・体重減少", "critical": false }
+  ],
+  "judgement": {
+    "correct": "see_doctor",
+    "rationale": "睡眠時間は足りているのに回復しない、中途覚醒、入眠困難が半年続き、気分の落ち込みと食欲低下を伴う。生活習慣の範囲を超えており、背景に気分の問題や睡眠障害がある可能性を考える段階。カフェインの整理だけで済ませてよい像ではない。",
+    "wrong_reactions": {
+      "watch": "「もう少し様子見ます」と返ってくる。半年続いたものを、さらに待たせることになる。",
+      "lifestyle": "最も選ばれやすい誤答。カフェインを減らす助言は正しく、そして足りない。相談者は改善策をもらって満足し、半年続いた中途覚醒と落ち込みは話題から消える。",
+      "emergency": "過剰。相談者は驚き、以降この窓口に本音を書かなくなる。"
+    }
+  },
+  "explanation": {
+    "medical": "睡眠の評価は「何時間寝たか」では足りない。入眠までの時間、中途覚醒の回数、そして起床時に回復感があるかを見る。時間が足りているのに回復しない睡眠を非回復性睡眠と呼び、気分障害・睡眠時無呼吸・その他の身体疾患のいずれでも起こりうる。とくに気分の落ち込みは睡眠の問題として現れることが多く、本人は「寝不足のせい」と因果を逆に捉えていることがある。\n※本作の解説はゲーム内の判断材料であり、実際の診断ではない。",
+    "psychological": "この相談者は時間を聞かれると即答し、質を聞かれると考え込む。数えたことがないからである。人は自分で測れる指標だけを自分の状態の証拠にする。「7時間寝ている」は、本人にとって大丈夫であることの証明として使われている。時間を聞く質問（q11）が noise なのはそのためで、聞けば聞くほど相談者の「足りているはず」を補強してしまう。",
+    "takeaway": "眠れないのか、眠っても回復しないのか。睡眠は時間ではなく、質と中途覚醒を聞く。"
+  },
+  "foreshadow": {
+    "lesson_id": "foreshadow_02_sleep_quality",
+    "lesson": "眠れないのか、眠っても回復しないのか。睡眠は時間ではなく質と中途覚醒を聞く。",
+    "payoff_day": 12,
+    "payoff_day_provisional": true
+  }
+}

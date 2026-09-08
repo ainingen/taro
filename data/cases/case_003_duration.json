@@ -1,0 +1,66 @@
+{
+  "id": "case_003_duration",
+  "title": "会社員・昔から胃が弱くて（伏線03。華子編の核に対応。payoff_day は仮値）",
+  "status": "skeleton",
+  "appear_after_day": 25,
+  "online_pool": false,
+  "consultant": {
+    "display_name": "コウ",
+    "age": "30代",
+    "gender": null,
+    "occupation": "会社員",
+    "note": "自分の症状を自分で説明して自分で結論づける。「まあ、体質なんで」で話を閉じにくる"
+  },
+  "opening": "お世話になります\n胃の調子が悪いんですが 昔から胃が弱いので体質だと思ってます\n念のため聞いておこうと思いまして",
+  "question_budget": 5,
+  "questions": [
+    { "id": "q01", "text": "「昔から」というのは、具体的にいつごろからですか。", "weight": "key", "answer": "そうですね……学生のころから\nいや 本当にしんどくなったのは去年の異動のあとかも", "reveals": ["true_onset"] },
+    { "id": "q02", "text": "その痛み方は、以前あった胃の不調と同じですか。違いますか。", "weight": "key", "answer": "……違うかもしれないです\n前はシクシクだったけど 今は重い感じがずっとあります", "reveals": ["character_changed"] },
+    { "id": "q03", "text": "症状のない日はありますか。それとも毎日ですか。", "weight": "key", "answer": "毎日です\n前は月に何回かでした", "reveals": ["frequency_changed"] },
+    { "id": "q04", "text": "体重は変わっていませんか。", "weight": "key", "answer": "半年で6キロ減りました\n忙しいからだと思ってます", "reveals": ["weight_loss"] },
+    { "id": "q05", "text": "黒い便や、血が混じることはありませんか。", "weight": "useful", "answer": "黒いことはあります\n鉄剤とか飲んでないです", "reveals": ["melena"] },
+    { "id": "q06", "text": "食事と痛みのタイミングに関係はありますか。", "weight": "useful", "answer": "食べると少しましになります\n空腹のとき痛いです", "reveals": ["timing"] },
+    { "id": "q07", "text": "市販薬は使っていますか。効いていますか。", "weight": "useful", "answer": "胃薬ずっと飲んでます\n最近あんまり効かないです", "reveals": ["med_failure"] },
+    { "id": "q08", "text": "胃の検査を受けたことはありますか。いつですか。", "weight": "useful", "answer": "ないです\n胃カメラ怖くて", "reveals": ["never_examined"] },
+    { "id": "q09", "text": "去年の異動のあと、生活で変わったことはありますか。", "weight": "useful", "answer": "残業が増えました\n休みの日も連絡きます", "reveals": ["stressor"] },
+    { "id": "q10", "text": "ご家族に胃の病気をされた方はいますか。", "weight": "useful", "answer": "父が胃がんでした\n60代のときです", "reveals": ["family_history"] },
+    { "id": "q11", "text": "辛いものやコーヒーはよく摂りますか。", "weight": "noise", "answer": "コーヒーは飲みます\nやっぱりよくないですか", "reveals": [] },
+    { "id": "q12", "text": "食事の時間は不規則ですか。", "weight": "noise", "answer": "不規則です\n昼を抜くこともあります", "reveals": [] },
+    { "id": "q13", "text": "お酒はどのくらい飲みますか。", "weight": "noise", "answer": "週に2回くらいです\n多くはないと思います", "reveals": [] },
+    { "id": "q14", "text": "早食いの癖はありませんか。", "weight": "noise", "answer": "早いです\n昔から言われます", "reveals": [] },
+    { "id": "q15", "text": "ストレスは自覚されていますか。", "weight": "noise", "answer": "まあ人並みだと思います\nみんな大変ですし", "reveals": [] },
+    { "id": "q16", "text": "体質ということでしたら、うまく付き合っていくしかないですね。", "weight": "harmful", "answer": "ですよね\nやっぱりそうか ありがとうございました", "reveals": [], "side_effect": "相談者が「体質」という自己診断を承認されたと受け取り、会話を終了しようとする。以降の質問に「まあ体質なんで」を繰り返し、期間や変化を聞いても新しい情報が出なくなる。" }
+  ],
+  "required_info": [
+    { "id": "true_onset", "label": "本当の発症時期は去年（「昔から」ではない）", "critical": true },
+    { "id": "character_changed", "label": "痛みの性質が以前と変わっている", "critical": true },
+    { "id": "frequency_changed", "label": "頻度が月数回から毎日に変わっている", "critical": true },
+    { "id": "weight_loss", "label": "半年で6kgの体重減少", "critical": true },
+    { "id": "melena", "label": "黒色便がある", "critical": false },
+    { "id": "med_failure", "label": "市販薬が効かなくなっている", "critical": false },
+    { "id": "never_examined", "label": "一度も検査を受けていない", "critical": false },
+    { "id": "family_history", "label": "家族歴がある", "critical": false },
+    { "id": "timing", "label": "空腹時痛・摂食で軽快", "critical": false },
+    { "id": "stressor", "label": "異動後の負荷増大", "critical": false }
+  ],
+  "judgement": {
+    "correct": "see_doctor",
+    "rationale": "本人が「体質」と呼んでいるものの中身を期間で割ると、去年から始まり、性質が変わり、頻度が上がり、体重が減り、黒色便があり、薬が効かなくなっている。これは体質の説明ではない。一度も検査を受けていないことも含め、受診勧奨が正しい。emergency ではないのは、現時点で出血が持続している所見や循環の破綻を示す訴えがないため。",
+    "wrong_reactions": {
+      "watch": "「やっぱり体質ですよね」と安心して終わる。この相談者にとって一番ほしかった答えを渡すことになる。",
+      "lifestyle": "コーヒーと早食いの助言をして終わる。相談者は改善の余地を得て納得し、体重減少と黒色便は最後まで話題に上がらない。",
+      "emergency": "過剰。ただし黒色便が続いている、めまいや動悸を伴う場合は判断が変わる。そこを聞けていたかどうかで、この誤答の重さは変わる。"
+    }
+  },
+  "explanation": {
+    "medical": "「昔からの持病」として語られる症状ほど、期間・性質・頻度の変化を確認する必要がある。同じ部位の同じような症状でも、以前と質が変わっていれば別の事象として扱う。体重減少、黒色便、市販薬の効果減弱は、いずれも「よくあること」の枠から外れる所見。家族歴は、それ単独では決め手にならないが、検査の閾値を下げる材料になる。\n※本作の解説はゲーム内の判断材料であり、実際の診断ではない。",
+    "psychological": "「昔から」「体質」「よくあること」は、症状を説明する言葉ではなく、症状を考えなくてよくするための言葉である。本人がすでに結論を出している相談は、その結論を疑うところからしか始まらない。ただし正面から否定すると相手は防衛する（q16 が harmful なのはその裏返しで、肯定しても同じく話が終わる）。有効なのは、結論ではなく期間を聞くこと。いつからか、以前と同じか。事実だけを聞かれた相談者は、自分の言葉が事実と合っていないことに自分で気づく。",
+    "takeaway": "「よくあること」で片づけられた症状ほど、いつからか・以前と同じかを聞く。"
+  },
+  "foreshadow": {
+    "lesson_id": "foreshadow_03_duration",
+    "lesson": "「よくあること」で片づけられた症状ほど、いつからか・以前と同じかを聞く。",
+    "payoff_day": 55,
+    "payoff_day_provisional": true
+  }
+}

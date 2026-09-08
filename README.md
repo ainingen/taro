@@ -52,9 +52,11 @@ taro/
 - [x] 設計ドキュメント
 - [x] 華子の表情差分 7点 (`assets/hanako/`)
 - [x] データスキーマとサンプル各1件
-- [ ] 節目の日の配置決定 (12〜15日)
+- [x] 伏線5本の確定 (`docs/design.md` 4節の対応表)
+- [x] 伏線ケース 5件 (骨格のみ。`status: skeleton`)
+- [ ] 節目の日の配置決定 (12〜15日) ← `payoff_day` 確定はこの後
 - [ ] 90日分のシナリオ本文
-- [ ] 出張ケース 20〜30件
+- [ ] 出張ケース 残り 15〜25件
 - [ ] 実装
 
 90日分のシナリオ本文はまだ書かない。節目の配置が未決定のため。
@@ -65,3 +67,11 @@ taro/
 `data/hanako_days/_schema.json` と `data/cases/_schema.json` を先に読む。
 サンプルは `day_001.json` と `case_001_calf.json`。
 スキーマを変えたときはサンプルも必ず追従させる。ここが唯一の正解の見本になる。
+
+伏線の `lesson_id` は `docs/design.md` 4節の対応表が正。表にない lesson_id を作らない。
+
+検証:
+
+```bash
+pip install jsonschema && python -c "import json,glob,jsonschema;[jsonschema.Draft202012Validator(json.load(open(s,encoding='utf-8'))).validate(json.load(open(f,encoding='utf-8'))) for s,p in [('data/cases/_schema.json','data/cases/case_*.json'),('data/hanako_days/_schema.json','data/hanako_days/day_*.json')] for f in glob.glob(p)];print('ok')"
+```

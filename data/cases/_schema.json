@@ -4,13 +4,32 @@
   "title": "出張編 1ケース",
   "description": "1ケース1ファイル。ファイル名は case_001_calf.json のように連番+短い識別子。カメラOFF・チャットのみ。相手は太郎をAI相談窓口だと思っている。",
   "type": "object",
-  "required": ["id", "title", "consultant", "opening", "question_budget", "questions", "required_info", "judgement", "explanation"],
+  "required": [
+    "id",
+    "title",
+    "consultant",
+    "opening",
+    "question_budget",
+    "questions",
+    "required_info",
+    "judgement",
+    "explanation"
+  ],
   "additionalProperties": false,
   "properties": {
-    "id": { "type": "string", "description": "ファイル名（拡張子なし）と一致させる。" },
-    "title": { "type": "string", "description": "制作用のタイトル。プレイヤーには出さない。" },
+    "id": {
+      "type": "string",
+      "description": "ファイル名（拡張子なし）と一致させる。"
+    },
+    "title": {
+      "type": "string",
+      "description": "制作用のタイトル。プレイヤーには出さない。"
+    },
     "appear_after_day": {
-      "type": ["integer", "null"],
+      "type": [
+        "integer",
+        "null"
+      ],
       "description": "この日以降に出現可能。伏線ケースは foreshadow.payoff_day より必ず前に出す。順序は実装側で検証する。"
     },
     "online_pool": {
@@ -21,14 +40,40 @@
     "consultant": {
       "type": "object",
       "description": "相手の属性。すべて自己申告であり、嘘が混じっていてよい。太郎に検証手段はない。",
-      "required": ["display_name"],
+      "required": [
+        "display_name"
+      ],
       "additionalProperties": false,
       "properties": {
-        "display_name": { "type": "string" },
-        "age": { "type": ["string", "null"], "description": "自己申告。「20代」のような曖昧さも可。" },
-        "gender": { "type": ["string", "null"] },
-        "occupation": { "type": ["string", "null"] },
-        "note": { "type": ["string", "null"], "description": "文体の癖・返信の速さなど、テキストからしか分からない情報。" }
+        "display_name": {
+          "type": "string"
+        },
+        "age": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "自己申告。「20代」のような曖昧さも可。"
+        },
+        "gender": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "occupation": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "note": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "文体の癖・返信の速さなど、テキストからしか分からない情報。"
+        }
       }
     },
     "opening": {
@@ -47,23 +92,46 @@
       "description": "質問パネル。16問前後。内訳の目安は key 2〜3 / useful 5〜6 / noise 5〜6 / harmful 1〜2。",
       "items": {
         "type": "object",
-        "required": ["id", "text", "weight", "answer"],
+        "required": [
+          "id",
+          "text",
+          "weight",
+          "answer"
+        ],
         "additionalProperties": false,
         "properties": {
-          "id": { "type": "string" },
-          "text": { "type": "string", "description": "太郎が送る質問文。" },
+          "id": {
+            "type": "string"
+          },
+          "text": {
+            "type": "string",
+            "description": "太郎が送る質問文。"
+          },
           "weight": {
-            "enum": ["key", "useful", "noise", "harmful"],
+            "enum": [
+              "key",
+              "useful",
+              "noise",
+              "harmful"
+            ],
             "description": "key=決定的 useful=有用だが決定打ではない noise=もっともらしいが無駄（医療知識があるほど引っかかる形にする） harmful=相手が萎縮し以降の回答が短くなる。"
           },
-          "answer": { "type": "string", "description": "相手の返答。" },
+          "answer": {
+            "type": "string",
+            "description": "相手の返答。"
+          },
           "reveals": {
             "type": "array",
-            "items": { "type": "string" },
+            "items": {
+              "type": "string"
+            },
             "description": "この質問で得られる required_info の id。"
           },
           "side_effect": {
-            "type": ["string", "null"],
+            "type": [
+              "string",
+              "null"
+            ],
             "description": "harmful のとき、以降の会話に何が起きるか。"
           }
         }
@@ -74,11 +142,18 @@
       "description": "正しい対応判断に到達するために必要な情報。これが揃わなければ判断は当て推量になる。",
       "items": {
         "type": "object",
-        "required": ["id", "label"],
+        "required": [
+          "id",
+          "label"
+        ],
         "additionalProperties": false,
         "properties": {
-          "id": { "type": "string" },
-          "label": { "type": "string" },
+          "id": {
+            "type": "string"
+          },
+          "label": {
+            "type": "string"
+          },
           "critical": {
             "type": "boolean",
             "default": false,
@@ -90,41 +165,105 @@
     "judgement": {
       "type": "object",
       "description": "対応判断。4択固定。",
-      "required": ["correct", "rationale"],
+      "required": [
+        "correct",
+        "rationale"
+      ],
       "additionalProperties": false,
       "properties": {
         "correct": {
-          "enum": ["watch", "lifestyle", "see_doctor", "emergency"],
+          "enum": [
+            "watch",
+            "lifestyle",
+            "see_doctor",
+            "emergency"
+          ],
           "description": "watch=様子見 lifestyle=生活改善 see_doctor=受診勧奨 emergency=緊急"
         },
-        "rationale": { "type": "string", "description": "なぜその判断か。" },
+        "rationale": {
+          "type": "string",
+          "description": "なぜその判断か。"
+        },
         "wrong_reactions": {
           "type": "object",
           "description": "誤った判断を選んだときに何が起きるか。キーは watch/lifestyle/see_doctor/emergency。",
-          "additionalProperties": { "type": "string" }
+          "additionalProperties": {
+            "type": "string"
+          }
         }
       }
     },
     "explanation": {
       "type": "object",
       "description": "判断後に出す解説。",
-      "required": ["takeaway"],
+      "required": [
+        "takeaway"
+      ],
       "additionalProperties": false,
       "properties": {
-        "medical": { "type": ["string", "null"], "description": "医学的な解説。" },
-        "psychological": { "type": ["string", "null"], "description": "心理学的な解説。なぜ相談者はそれを言わなかったのか。" },
-        "takeaway": { "type": "string", "description": "一文で持ち帰らせるもの。伏線ケースではこれが後日そのまま効く。" }
+        "medical": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "医学的な解説。"
+        },
+        "psychological": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "心理学的な解説。なぜ相談者はそれを言わなかったのか。"
+        },
+        "takeaway": {
+          "type": "string",
+          "description": "一文で持ち帰らせるもの。伏線ケースではこれが後日そのまま効く。"
+        }
       }
     },
     "foreshadow": {
-      "type": ["object", "null"],
-      "description": "華子編への伏線フラグ。本編20〜30ケース中5ケースに設定する。",
-      "required": ["lesson", "payoff_day"],
+      "type": [
+        "object",
+        "null"
+      ],
+      "description": "華子編への伏線フラグ。本編20〜30ケース中5ケースに設定する。5本の一覧は docs/design.md 4節の対応表。",
+      "required": [
+        "lesson_id",
+        "lesson",
+        "payoff_day",
+        "payoff_day_provisional"
+      ],
       "additionalProperties": false,
       "properties": {
-        "lesson": { "type": "string", "description": "プレイヤーが持ち帰る知識。華子編でこれを使って異変に気づく。" },
-        "payoff_day": { "type": "integer", "minimum": 1, "maximum": 90, "description": "回収される華子編の日。その日の payoff_of と相互に一致させる。" }
+        "lesson_id": {
+          "type": "string",
+          "pattern": "^foreshadow_[0-9]{2}_[a-z_]+$",
+          "description": "伏線の識別子。華子編の required_lesson / lesson_gate.lesson_id から参照される。docs/design.md 4節の対応表が正。"
+        },
+        "lesson": {
+          "type": "string",
+          "description": "プレイヤーが持ち帰る知識。華子編でこれを使って異変に気づく。"
+        },
+        "payoff_day": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 90,
+          "description": "回収される華子編の日。その日の payoff_of と相互に一致させる。"
+        },
+        "payoff_day_provisional": {
+          "type": "boolean",
+          "default": true,
+          "description": "true = payoff_day は仮値。90日の節目配置が未決定のため現時点は全件 true。配置確定後に日を確定させて false にする。true のまま実装で順序検証を通さないこと。"
+        }
       }
+    },
+    "status": {
+      "enum": [
+        "skeleton",
+        "final"
+      ],
+      "default": "skeleton",
+      "description": "skeleton=骨格のみ（質問パネルの構成・重み・判断は確定、台詞は仮）。final=本文確定。骨格段階のケースを実装で本番投入しないための目印。"
     }
   }
 }
