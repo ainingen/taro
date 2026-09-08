@@ -1,0 +1,130 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "taro/data/cases/_schema.json",
+  "title": "出張編 1ケース",
+  "description": "1ケース1ファイル。ファイル名は case_001_calf.json のように連番+短い識別子。カメラOFF・チャットのみ。相手は太郎をAI相談窓口だと思っている。",
+  "type": "object",
+  "required": ["id", "title", "consultant", "opening", "question_budget", "questions", "required_info", "judgement", "explanation"],
+  "additionalProperties": false,
+  "properties": {
+    "id": { "type": "string", "description": "ファイル名（拡張子なし）と一致させる。" },
+    "title": { "type": "string", "description": "制作用のタイトル。プレイヤーには出さない。" },
+    "appear_after_day": {
+      "type": ["integer", "null"],
+      "description": "この日以降に出現可能。伏線ケースは foreshadow.payoff_day より必ず前に出す。順序は実装側で検証する。"
+    },
+    "online_pool": {
+      "type": "boolean",
+      "default": false,
+      "description": "クリア後の『癒しマンONLINE』の出題プールに入れるか。本編の伏線ケースは false にして、一周目の驚きを保存する。"
+    },
+    "consultant": {
+      "type": "object",
+      "description": "相手の属性。すべて自己申告であり、嘘が混じっていてよい。太郎に検証手段はない。",
+      "required": ["display_name"],
+      "additionalProperties": false,
+      "properties": {
+        "display_name": { "type": "string" },
+        "age": { "type": ["string", "null"], "description": "自己申告。「20代」のような曖昧さも可。" },
+        "gender": { "type": ["string", "null"] },
+        "occupation": { "type": ["string", "null"] },
+        "note": { "type": ["string", "null"], "description": "文体の癖・返信の速さなど、テキストからしか分からない情報。" }
+      }
+    },
+    "opening": {
+      "type": "string",
+      "description": "第一声。属性は名乗るが、症状の全体像は言わない。相談者は自分にとっての「一番困っていること」しか書かない。"
+    },
+    "question_budget": {
+      "type": "integer",
+      "minimum": 1,
+      "default": 5,
+      "description": "選べる質問数。5問前後。パネル16問前後に対して絞ることが設計の肝（docs/design.md 4節）。"
+    },
+    "questions": {
+      "type": "array",
+      "minItems": 8,
+      "description": "質問パネル。16問前後。内訳の目安は key 2〜3 / useful 5〜6 / noise 5〜6 / harmful 1〜2。",
+      "items": {
+        "type": "object",
+        "required": ["id", "text", "weight", "answer"],
+        "additionalProperties": false,
+        "properties": {
+          "id": { "type": "string" },
+          "text": { "type": "string", "description": "太郎が送る質問文。" },
+          "weight": {
+            "enum": ["key", "useful", "noise", "harmful"],
+            "description": "key=決定的 useful=有用だが決定打ではない noise=もっともらしいが無駄（医療知識があるほど引っかかる形にする） harmful=相手が萎縮し以降の回答が短くなる。"
+          },
+          "answer": { "type": "string", "description": "相手の返答。" },
+          "reveals": {
+            "type": "array",
+            "items": { "type": "string" },
+            "description": "この質問で得られる required_info の id。"
+          },
+          "side_effect": {
+            "type": ["string", "null"],
+            "description": "harmful のとき、以降の会話に何が起きるか。"
+          }
+        }
+      }
+    },
+    "required_info": {
+      "type": "array",
+      "description": "正しい対応判断に到達するために必要な情報。これが揃わなければ判断は当て推量になる。",
+      "items": {
+        "type": "object",
+        "required": ["id", "label"],
+        "additionalProperties": false,
+        "properties": {
+          "id": { "type": "string" },
+          "label": { "type": "string" },
+          "critical": {
+            "type": "boolean",
+            "default": false,
+            "description": "true のとき、これを取らずに正解判断を選んでも「まぐれ当たり」として扱う。"
+          }
+        }
+      }
+    },
+    "judgement": {
+      "type": "object",
+      "description": "対応判断。4択固定。",
+      "required": ["correct", "rationale"],
+      "additionalProperties": false,
+      "properties": {
+        "correct": {
+          "enum": ["watch", "lifestyle", "see_doctor", "emergency"],
+          "description": "watch=様子見 lifestyle=生活改善 see_doctor=受診勧奨 emergency=緊急"
+        },
+        "rationale": { "type": "string", "description": "なぜその判断か。" },
+        "wrong_reactions": {
+          "type": "object",
+          "description": "誤った判断を選んだときに何が起きるか。キーは watch/lifestyle/see_doctor/emergency。",
+          "additionalProperties": { "type": "string" }
+        }
+      }
+    },
+    "explanation": {
+      "type": "object",
+      "description": "判断後に出す解説。",
+      "required": ["takeaway"],
+      "additionalProperties": false,
+      "properties": {
+        "medical": { "type": ["string", "null"], "description": "医学的な解説。" },
+        "psychological": { "type": ["string", "null"], "description": "心理学的な解説。なぜ相談者はそれを言わなかったのか。" },
+        "takeaway": { "type": "string", "description": "一文で持ち帰らせるもの。伏線ケースではこれが後日そのまま効く。" }
+      }
+    },
+    "foreshadow": {
+      "type": ["object", "null"],
+      "description": "華子編への伏線フラグ。本編20〜30ケース中5ケースに設定する。",
+      "required": ["lesson", "payoff_day"],
+      "additionalProperties": false,
+      "properties": {
+        "lesson": { "type": "string", "description": "プレイヤーが持ち帰る知識。華子編でこれを使って異変に気づく。" },
+        "payoff_day": { "type": "integer", "minimum": 1, "maximum": 90, "description": "回収される華子編の日。その日の payoff_of と相互に一致させる。" }
+      }
+    }
+  }
+}

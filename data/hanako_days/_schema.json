@@ -1,0 +1,149 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "taro/data/hanako_days/_schema.json",
+  "title": "華子編 1日分",
+  "description": "1日1ファイル。ファイル名は day_001.json のように3桁ゼロ埋め。face はファイル名ではなく番号で参照する（docs/character_hanako.md）。",
+  "type": "object",
+  "required": ["day", "day_type", "face", "state", "outcome"],
+  "additionalProperties": false,
+  "properties": {
+    "day": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 90,
+      "description": "1〜90。ファイル名の連番と一致させる。"
+    },
+    "day_type": {
+      "enum": ["milestone", "observation", "calm"],
+      "description": "milestone=節目(12〜15日/重い設問と外れあり) observation=観察の日(40日前後/軽い選択・外れなし) calm=凪(設問なし)。密度の設計は docs/design.md 3節。"
+    },
+    "face": {
+      "enum": ["01", "02", "03", "04", "05", "06"],
+      "description": "その日の既定表情。凪の日にも必ず設定する。凪が続く中で face だけが変わることに気づかせるのが本作の要。06 は終盤まで使わない。"
+    },
+    "state": {
+      "type": "object",
+      "description": "華子の状態。太郎はPCが見えるものしか見えないので、ここに書けるのはPC越しに観測できることだけ。",
+      "required": ["home_time", "pc_activity"],
+      "additionalProperties": false,
+      "properties": {
+        "home_time": {
+          "type": ["string", "null"],
+          "description": "PCが起動した時刻から分かる帰宅時刻。HH:MM。帰宅しなかった日は null。"
+        },
+        "meal": {
+          "type": ["string", "null"],
+          "description": "食事。カメラに映ったもの、または購入履歴から分かる範囲のみ。不明なら null。"
+        },
+        "sleep": {
+          "type": ["string", "null"],
+          "description": "PCが落ちた時刻から推定できる睡眠。不明なら null。"
+        },
+        "body": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "身体の訴え。本人が口にしたか、カメラで見える動作（さする・かばう）に限る。"
+        },
+        "pc_activity": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "PC上の行動。検索・購入・SNS・打ちかけて消した文字など。太郎が最も確実に見られる情報。"
+        }
+      }
+    },
+    "clues": {
+      "type": "array",
+      "description": "観察できる手がかり。プレイヤーが自力で気づく対象。凪の日にこれを混ぜると伏線になる。",
+      "items": {
+        "type": "object",
+        "required": ["id", "text"],
+        "additionalProperties": false,
+        "properties": {
+          "id": { "type": "string" },
+          "text": { "type": "string" },
+          "requires_case": {
+            "type": ["string", "null"],
+            "description": "この手がかりの意味に気づくために必要な出張ケースの id。未プレイなら見えていても意味が分からない、という設計に使う。"
+          }
+        }
+      }
+    },
+    "lines": {
+      "type": "array",
+      "description": "その日の台詞。改行は \n。face を省いた行はその日の既定 face を使う。",
+      "items": {
+        "type": "object",
+        "required": ["speaker", "text"],
+        "additionalProperties": false,
+        "properties": {
+          "speaker": {
+            "enum": ["hanako", "taro", "kami"],
+            "description": "kami=神様。太郎の転換点で登場する（docs/design.md 6節）。"
+          },
+          "face": {
+            "enum": ["01", "02", "03", "04", "05", "06"],
+            "description": "行単位で表情を変えるときだけ指定。speaker が hanako のときのみ有効。"
+          },
+          "text": { "type": "string" }
+        }
+      }
+    },
+    "question": {
+      "type": ["object", "null"],
+      "description": "設問。calm の日は null。milestone には外れ選択肢を必ず含める。observation には外れを作らない（放っておくことも正解になり得る）。",
+      "required": ["prompt", "choices"],
+      "additionalProperties": false,
+      "properties": {
+        "prompt": { "type": "string" },
+        "choices": {
+          "type": "array",
+          "minItems": 2,
+          "items": {
+            "type": "object",
+            "required": ["id", "text", "kind", "reaction", "effect"],
+            "additionalProperties": false,
+            "properties": {
+              "id": { "type": "string" },
+              "text": { "type": "string" },
+              "kind": {
+                "enum": ["correct", "neutral", "miss", "overstep"],
+                "description": "correct=正解方向 neutral=外れではない(observation の既定) miss=大外れ→face 05 overstep=踏み込みすぎ→face 04。milestone 以外に miss/overstep を置かない。"
+              },
+              "reaction": {
+                "type": "object",
+                "required": ["text"],
+                "additionalProperties": false,
+                "properties": {
+                  "face": { "enum": ["01", "02", "03", "04", "05", "06"] },
+                  "text": { "type": "string" }
+                }
+              },
+              "effect": {
+                "type": "object",
+                "description": "信頼度と癒しポイントの増減。レンジと閾値は節目の配置確定後に逆算するため未定（docs/design.md 5節）。",
+                "additionalProperties": false,
+                "properties": {
+                  "trust": { "type": "integer" },
+                  "heal": { "type": "integer" }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "correct_direction": {
+      "type": ["string", "null"],
+      "description": "その日の正解方向を一文で。選択肢の文面ではなく、なぜそれが正解かを書く。太郎の転換点の前後で正解が入れ替わる日は、その旨をここに明記する。"
+    },
+    "outcome": {
+      "type": "string",
+      "description": "その日の到達点。何が変わったか、あるいは何も変わらなかったか。凪の日にも必ず書く。"
+    },
+    "payoff_of": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "この日に回収される出張ケースの id。ケース側の foreshadow.payoff_day と相互に一致させる。ケースは必ずこの日より前に出す。"
+    }
+  }
+}
